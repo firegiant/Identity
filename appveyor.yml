@@ -1,0 +1,45 @@
+-
+  branches:
+    only:
+      - master
+
+  version: 1.0.0-build-{build}
+  configuration: Release
+  assembly_info:
+    patch: true
+    file: '**\AssemblyInfo.*'
+    assembly_version: '1.0.0.{build}'
+    assembly_file_version: '1.0.0.{build}'
+    assembly_informational_version: 1.0.0-build-{build}
+
+  before_build:
+  - cmd: dotnet restore
+
+  build_script:
+  - cmd: dotnet pack src\FireGiant.Identity --configuration %CONFIGURATION% --version-suffix build-%APPVEYOR_BUILD_NUMBER% --output "artifacts\bin\FireGiant.Identity"
+
+  artifacts:
+  - path: artifacts\bin\**\*.nupkg
+
+  nuget:
+    account_feed: true
+    project_feed: true
+    disable_publish_on_pr: true
+
+-
+  version: 1.0.0-build-{branch}-{build}
+  configuration: Debug
+
+  before_build:
+  - cmd: dotnet restore
+
+  build_script:
+  - cmd: dotnet pack src\FireGiant.Identity --configuration %CONFIGURATION% --version-suffix build-%APPVEYOR_BUILD_NUMBER% --output "artifacts\bin\FireGiant.Identity"
+
+  artifacts:
+  - path: artifacts\bin\**\*.nupkg
+
+  nuget:
+    account_feed: true
+    project_feed: true
+    disable_publish_on_pr: true
