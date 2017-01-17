@@ -16,10 +16,9 @@ namespace FireGiant.Identity.AzureTableStorage
         {
             user.SetEntityKeys();
 
-            var operations = new List<TableOperation>();
-            operations.Add(TableOperation.Insert(user));
-            operations.AddRange(user.ReferencesToAdd.Select(r => TableOperation.Insert(r)));
-            operations.AddRange(user.ReferencesToRemove.Select(r => TableOperation.Delete(r)));
+            var operations = new List<TableOperation> { TableOperation.Insert(user) };
+            operations.AddRange(user.ReferencesToAdd.Select(TableOperation.Insert));
+            operations.AddRange(user.ReferencesToRemove.Select(TableOperation.Delete));
 
             await this.ExecuteOperationsAsync(operations);
 
@@ -30,12 +29,11 @@ namespace FireGiant.Identity.AzureTableStorage
         {
             user.SetEntityKeys();
 
-            user.RemoveReference(this.CreateUserNameReference(user));
+            user.RemoveReference(CreateUserNameReference(user));
             user.RemoveReference(CreateEmailReference(user));
 
-            var operations = new List<TableOperation>();
-            operations.Add(TableOperation.Delete(user));
-            operations.AddRange(user.ReferencesToRemove.Select(r => TableOperation.Delete(r)));
+            var operations = new List<TableOperation> { TableOperation.Delete(user) };
+            operations.AddRange(user.ReferencesToRemove.Select(TableOperation.Delete));
 
             await this.ExecuteOperationsAsync(operations);
 
@@ -47,33 +45,9 @@ namespace FireGiant.Identity.AzureTableStorage
             user.SetEntityKeys();
             user.ETag = "*";
 
-            var operations = new List<TableOperation>();
-            operations.Add(TableOperation.Replace(user));
-            operations.AddRange(user.ReferencesToAdd.Select(r => TableOperation.Insert(r)));
-            operations.AddRange(user.ReferencesToRemove.Select(r => TableOperation.Delete(r)));
-
-            //var operations = new List<TableOperation>()
-            //{
-            //    TableOperation.Replace(user)
-            //};
-
-            //if (user.PreviousNormalizedUserName != user.NormalizedUserName)
-            //{
-            //    var oldRef = this.CreateUsernameReference(user, true);
-            //    var newRef = this.CreateUsernameReference(user);
-
-            //    if (newRef != null) { operations.Add(TableOperation.Insert(newRef)); }
-            //    if (oldRef != null) { operations.Add(TableOperation.Delete(oldRef)); }
-            //}
-
-            //if (user.PreviousNormalizedEmail != user.NormalizedEmail)
-            //{
-            //    var oldRef = this.CreateEmailReference(user, true);
-            //    var newRef = this.CreateEmailReference(user);
-
-            //    if (newRef != null) { operations.Add(TableOperation.Insert(newRef)); }
-            //    if (oldRef != null) { operations.Add(TableOperation.Delete(oldRef)); }
-            //}
+            var operations = new List<TableOperation> { TableOperation.Replace(user) };
+            operations.AddRange(user.ReferencesToAdd.Select(TableOperation.Insert));
+            operations.AddRange(user.ReferencesToRemove.Select(TableOperation.Delete));
 
             await this.ExecuteOperationsAsync(operations);
 
@@ -118,11 +92,11 @@ namespace FireGiant.Identity.AzureTableStorage
             {
                 if (!String.IsNullOrEmpty(user.NormalizedUserName))
                 {
-                    user.RemoveReference(this.CreateUserNameReference(user));
+                    user.RemoveReference(CreateUserNameReference(user));
                 }
 
                 user.NormalizedUserName = normalizedName;
-                user.AddReference(this.CreateUserNameReference(user));
+                user.AddReference(CreateUserNameReference(user));
             }
 
             return Task.FromResult(0);
@@ -134,7 +108,7 @@ namespace FireGiant.Identity.AzureTableStorage
             return Task.FromResult(0);
         }
 
-        private AzureUserReference CreateUserNameReference(AzureUser user)
+        private static AzureUserReference CreateUserNameReference(AzureUser user)
         {
             if (String.IsNullOrEmpty(user.NormalizedUserName))
             {
