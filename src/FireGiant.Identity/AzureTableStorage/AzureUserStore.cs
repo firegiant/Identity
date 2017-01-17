@@ -31,6 +31,20 @@ namespace FireGiant.Identity.AzureTableStorage
             _disposed = true;
         }
 
+        private async Task<TableQuerySegment<T>> QueryAsync<T>(TableQuery<T> query, TableContinuationToken token) where T : ITableEntity, new()
+        {
+            this.ThrowIfDisposed();
+
+            if (!_tableCreated)
+            {
+                await _table.CreateIfNotExistsAsync();
+
+                _tableCreated = true;
+            }
+
+            return await _table.ExecuteQuerySegmentedAsync(query, token);
+        }
+
         private async Task<TableResult> ExecuteAsync(TableOperation operation)
         {
             this.ThrowIfDisposed();
