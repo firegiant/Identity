@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) FireGiant.  All Rights Reserved. -->
+
+<Project>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)..\build\obj\$(Configuration)\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)..\build\$(Configuration)\</BaseOutputPath>
+    <OutputPath>$(BaseOutputPath)</OutputPath>
+
+    <Authors>FireGiant</Authors>
+    <Company>FireGiant</Company>
+    <Copyright>Copyright (c) FireGiant.  All Rights Reserved.</Copyright>
+    <Product>FireGiant Identity</Product>
+  </PropertyGroup>
+
+  <Import Project="Custom.Build.props" Condition=" Exists('Custom.Build.props') " />
+</Project>

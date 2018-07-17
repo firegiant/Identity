@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FireGiant.Identity", "src\FireGiant.Identity\FireGiant.Identity.csproj", "{07A45B98-17D6-472C-A938-388C876D7AB9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FGTest.Identity", "test\FGTest.Identity\FGTest.Identity.csproj", "{4357DAAC-5151-489A-91F8-22B89F1E1FEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FGTest.Identity", "src\test\FGTest.Identity\FGTest.Identity.csproj", "{4357DAAC-5151-489A-91F8-22B89F1E1FEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

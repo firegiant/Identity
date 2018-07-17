@@ -1,45 +1,24 @@
--
-  branches:
-    only:
-      - master
+image: Visual Studio 2017
 
-  version: 1.0.0-build-{build}
-  configuration: Release
-  assembly_info:
-    patch: true
-    file: '**\AssemblyInfo.*'
-    assembly_version: '1.0.0.{build}'
-    assembly_file_version: '1.0.0.{build}'
-    assembly_informational_version: 1.0.0-build-{build}
+version: 0.0.0.{build}
+configuration: Release
 
-  before_build:
-  - cmd: dotnet restore
+environment:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  NUGET_XMLDOC_MODE: skip
 
-  build_script:
-  - cmd: dotnet pack src\FireGiant.Identity --configuration %CONFIGURATION% --version-suffix build-%APPVEYOR_BUILD_NUMBER% --output "artifacts\bin\FireGiant.Identity"
+build_script:
+  - appveyor.cmd
 
-  artifacts:
-  - path: artifacts\bin\**\*.nupkg
+pull_requests:
+  do_not_increment_build_number: true
 
-  nuget:
-    account_feed: true
-    project_feed: true
-    disable_publish_on_pr: true
+nuget:
+  disable_publish_on_pr: true
 
--
-  version: 1.0.0-build-{branch}-{build}
-  configuration: Debug
+skip_tags: true
 
-  before_build:
-  - cmd: dotnet restore
-
-  build_script:
-  - cmd: dotnet pack src\FireGiant.Identity --configuration %CONFIGURATION% --version-suffix build-%APPVEYOR_BUILD_NUMBER% --output "artifacts\bin\FireGiant.Identity"
-
-  artifacts:
-  - path: artifacts\bin\**\*.nupkg
-
-  nuget:
-    account_feed: true
-    project_feed: true
-    disable_publish_on_pr: true
+artifacts:
+- path: build\Release\**\*.nupkg
+  name: nuget

@@ -1,4 +1,4 @@
-﻿// Copyright (c) FireGiant.  All Rights Reserved.
+// Copyright (c) FireGiant.  All Rights Reserved.
 
 using System;
 using System.IO;
