@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FireGiant.Identity", "src\FireGiant.Identity\FireGiant.Identity.xproj", "{07A45B98-17D6-472C-A938-388C876D7AB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FireGiant.Identity", "src\FireGiant.Identity\FireGiant.Identity.csproj", "{07A45B98-17D6-472C-A938-388C876D7AB9}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FGTest.Identity", "test\FGTest.Identity\FGTest.Identity.xproj", "{4357DAAC-5151-489A-91F8-22B89F1E1FEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FGTest.Identity", "test\FGTest.Identity\FGTest.Identity.csproj", "{4357DAAC-5151-489A-91F8-22B89F1E1FEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F74A2739-4D0D-4034-A468-61A1D866AD5C}
 	EndGlobalSection
 EndGlobal
