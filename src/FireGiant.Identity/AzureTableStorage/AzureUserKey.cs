@@ -26,8 +26,7 @@ namespace FireGiant.Identity.AzureTableStorage
         public static AzureUserKey ForUserId(string userId)
         {
 #if DEBUG
-            Guid guid;
-            if (!Guid.TryParse(userId, out guid) || userId != CalculatePartitionKeyForUserId(guid))
+            if (!Guid.TryParse(userId, out var guid) || userId != CalculatePartitionKeyForUserId(guid))
             {
                 Debug.Fail("User id should be a Guid");
             }

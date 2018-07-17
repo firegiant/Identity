@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) FireGiant.  All Rights Reserved.
+
+using System;
 
 namespace FGTest.Identity.Models
 {

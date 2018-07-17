@@ -18,9 +18,7 @@ namespace FireGiant.Identity.Extensions
 
         public static async Task AddAccess<TUser>(this UserManager<TUser> userManager, TUser user, string ip, string userAgent, string result) where TUser : AzureUser
         {
-            var aum = userManager as AzureUserManager<TUser>;
-
-            if (aum != null)
+            if (userManager is AzureUserManager<TUser> aum)
             {
                 await aum.AddAccess(user, ip, userAgent, result);
             }
@@ -28,9 +26,7 @@ namespace FireGiant.Identity.Extensions
 
         public static async Task<IEnumerable<UserAccess>> GetAccesses<TUser>(this UserManager<TUser> userManager, TUser user) where TUser : AzureUser
         {
-            var aum = userManager as AzureUserManager<TUser>;
-
-            if (aum != null)
+            if (userManager is AzureUserManager<TUser> aum)
             {
                 return await aum.GetAccesses(user);
             }

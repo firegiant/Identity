@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FireGiant.Identity.AzureTableStorage
 {
-    class NameValue
+    internal class NameValue
     {
         public string Name { get; set; }
 

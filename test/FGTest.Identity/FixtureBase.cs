@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) FireGiant.  All Rights Reserved.
+
+using System;
 using FGTest.Identity.Models;
 using FireGiant.Identity;
 using FireGiant.Identity.AzureTableStorage;
