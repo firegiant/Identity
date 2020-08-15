@@ -4,9 +4,16 @@
 <Project>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)..\build\obj\$(Configuration)\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-    <BaseOutputPath>$(MSBuildThisFileDirectory)..\build\$(Configuration)\</BaseOutputPath>
+
+    <BuildFolder>$(BUILD_BINARIESDIRECTORY)</BuildFolder>
+    <BuildFolder Condition=" '$(BuildFolder)' == '' ">$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\Build\))</BuildFolder>
+    <BuildFolder Condition=" !HasTrailingSlash('$(BuildFolder)') ">$(BuildFolder)\</BuildFolder>
+
+    <ProjectName Condition=" '$(ProjectName)' == '' ">$(MSBuildProjectName)</ProjectName>
+    <BaseIntermediateOutputPath>$(BuildFolder)obj\$(Configuration)\$(ProjectName)\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(BuildFolder)$(Configuration)\</BaseOutputPath>
     <OutputPath>$(BaseOutputPath)</OutputPath>
+    <PublishDir>$(BuildFolder)publish\$(Configuration)\</PublishDir>
 
     <Authors>FireGiant</Authors>
     <Company>FireGiant</Company>

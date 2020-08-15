@@ -25,7 +25,10 @@ namespace FGTest.Identity
 
             services.AddLogging()
                 .AddIdentity<TestUser, TestRole>()
-                .AddAzureTableStore(new AzureUserStoreConfig(connection, this.UserTableName));
+                .AddAzureTableStore(new AzureUserStoreConfig(connection, this.UserTableName))
+                .AddDefaultTokenProviders()
+                .AddPasswordlessLoginTokenProvider()
+                .AddPasswordlessLoginTotpTokenProvider();
 
             this.Scope = services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>().CreateScope();
 

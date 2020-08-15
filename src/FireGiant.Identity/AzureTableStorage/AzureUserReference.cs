@@ -11,15 +11,15 @@ namespace FireGiant.Identity.AzureTableStorage
         {
         }
 
-        public AzureUserReference(AzureUserReferenceKey keys, string id)
+        public AzureUserReference(AzureUserReferenceKey key, string id)
         {
             if (String.IsNullOrEmpty(id))
             {
                 throw new ArgumentNullException("User id must be specified to create a reference.", nameof(id));
             }
 
-            this.PartitionKey = keys.Partition;
-            this.RowKey = keys.Row;
+            this.PartitionKey = key.Partition;
+            this.RowKey = key.Row;
             this.UserId = id;
         }
 

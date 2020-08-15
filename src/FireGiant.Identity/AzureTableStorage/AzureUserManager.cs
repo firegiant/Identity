@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FireGiant.Identity.Extensions;
 using Microsoft.AspNetCore.Identity;
@@ -41,7 +40,7 @@ namespace FireGiant.Identity.AzureTableStorage
                 return await store.GetAccess(user);
             }
 
-            return Enumerable.Empty<UserAccess>();
+            return Array.Empty<UserAccess>();
         }
     }
 }

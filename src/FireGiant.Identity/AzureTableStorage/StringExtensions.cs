@@ -18,7 +18,7 @@ namespace FireGiant.Identity.AzureTableStorage
             }
 
             var bytes = Encoding.UTF8.GetBytes(value);
-            return Convert.ToBase64String(bytes).Replace('+', '-').Replace('/', '_').TrimEnd('=');
+            return Convert.ToBase64String(bytes).TrimEnd('=').Replace('+', '-').Replace('/', '_');
         }
 
         public static string ToBase64IfUnsafe(this string value)

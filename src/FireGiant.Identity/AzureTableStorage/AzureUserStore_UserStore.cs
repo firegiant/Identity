@@ -17,10 +17,13 @@ namespace FireGiant.Identity.AzureTableStorage
             user.SetEntityKeys();
 
             var operations = new List<TableOperation> { TableOperation.Insert(user) };
-            operations.AddRange(user.ReferencesToAdd.Select(TableOperation.Insert));
+            operations.AddRange(user.ReferencesToAdd.Select(TableOperation.InsertOrReplace));
             operations.AddRange(user.ReferencesToRemove.Select(TableOperation.Delete));
 
             await this.ExecuteOperationsAsync(operations);
+
+            user.ReferencesToAdd.Clear();
+            user.ReferencesToRemove.Clear();
 
             return IdentityResult.Success;
         }
@@ -37,6 +40,9 @@ namespace FireGiant.Identity.AzureTableStorage
 
             await this.ExecuteOperationsAsync(operations);
 
+            user.ReferencesToAdd.Clear();
+            user.ReferencesToRemove.Clear();
+
             return IdentityResult.Success;
         }
 
@@ -46,10 +52,13 @@ namespace FireGiant.Identity.AzureTableStorage
             user.ETag = "*";
 
             var operations = new List<TableOperation> { TableOperation.Replace(user) };
-            operations.AddRange(user.ReferencesToAdd.Select(TableOperation.Insert));
+            operations.AddRange(user.ReferencesToAdd.Select(TableOperation.InsertOrReplace));
             operations.AddRange(user.ReferencesToRemove.Select(TableOperation.Delete));
 
             await this.ExecuteOperationsAsync(operations);
+
+            user.ReferencesToAdd.Clear();
+            user.ReferencesToRemove.Clear();
 
             return await Task.FromResult(IdentityResult.Success);
         }

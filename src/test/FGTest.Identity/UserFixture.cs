@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using FGTest.Identity.Models;
 using FireGiant.Identity.Extensions;
@@ -13,6 +14,48 @@ namespace FGTest.Identity
 {
     public class UserFixture : FixtureBase
     {
+        [Fact]
+        public async Task CanVerifyPasswordlessAccessToken()
+        {
+            var user = await this.EnsureTestUserCreated();
+
+            var userManager = this.Scope.ServiceProvider.GetService<UserManager<TestUser>>();
+            //var t1 = userManager.GetChangeEmailTokenPurpose("foo2@example.com");
+
+            var tt = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            Assert.NotNull(tt);
+
+            var token1 = await userManager.GenerateUserTokenAsync(user, "Default", "passwordless-auth");
+            Assert.NotNull(token1);
+
+            var token11 = await userManager.GenerateTwoFactorTokenAsync(user, "Default");
+            Assert.NotNull(token11);
+
+            var token15 = await userManager.GenerateTwoFactorTokenAsync(user, "Email");
+            Assert.NotNull(token15);
+
+            var token91 = await userManager.GeneratePasswordlessAccessTokenAsync(user);
+            Assert.Equal(220, token91.Length);
+
+            //var token9 = await userManager.GenerateUserTokenAsync(user, FireGiantIdentityProviders.PasswordlessLoginTokenProvider, FireGiantIdentityProviders.PasswordlessLoginPurpose);
+            //Assert.Equal(220, token9.Length);
+
+            //var token = await userManager.GenerateUserTokenAsync(user, FireGiantIdentityProviders.PasswordlessLoginTotpTokenProvider, FireGiantIdentityProviders.PasswordlessLoginPurpose);
+            //Assert.Equal(6, token.Length);
+
+            //var token2 = await userManager.GenerateTwoFactorTokenAsync(user, FireGiantIdentityProviders.PasswordlessLoginTotpTokenProvider);
+            //Assert.NotNull(token1);
+
+            //var result = await userManager.VerifyUserTokenAsync(user, FireGiantIdentityProviders.PasswordlessLoginTotpTokenProvider, FireGiantIdentityProviders.PasswordlessLoginPurpose, token);
+            var result = await userManager.VerifyPasswordlessAccessTokenAsync(user, token91);
+            Assert.True(result);
+
+            await userManager.UpdateSecurityStampAsync(user);
+
+            result = await userManager.VerifyUserTokenAsync(user, "PasswordlessLoginTotpTokenProvider", "auth", token91);
+            Assert.False(result);
+        }
+
         [Fact]
         public async Task CanCreateUser()
         {
@@ -29,6 +72,31 @@ namespace FGTest.Identity
             Assert.True(result.Succeeded);
             Assert.Equal("FOO", user.NormalizedUserName);
             Assert.Equal("FOO@EXAMPLE.COM", user.NormalizedEmail);
+        }
+
+        [Fact]
+        public async Task CanCreateUserAndAddClaims()
+        {
+            var user = new TestUser()
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Email = "foo_claims@example.com",
+                UserName = "foo_claims"
+            };
+
+            var userManager = this.Scope.ServiceProvider.GetService<UserManager<TestUser>>();
+
+            var result = await userManager.CreateAsync(user, "P@ssw0rd");
+            Assert.True(result.Succeeded);
+
+            var claims = new[]
+            {
+                new Claim("name", "Foo User"),
+                new Claim("company", "FireGiant"),
+            };
+
+            result = await userManager.AddClaimsAsync(user, claims);
+            Assert.True(result.Succeeded);
         }
 
         [Fact]
